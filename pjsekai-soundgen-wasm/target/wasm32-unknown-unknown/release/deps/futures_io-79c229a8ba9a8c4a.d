@@ -1,0 +1,7 @@
+/workspaces/pjsekai-soundgen-wasm/pjsekai-soundgen-wasm/target/wasm32-unknown-unknown/release/deps/futures_io-79c229a8ba9a8c4a.rmeta: /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-io-0.3.24/src/lib.rs
+
+/workspaces/pjsekai-soundgen-wasm/pjsekai-soundgen-wasm/target/wasm32-unknown-unknown/release/deps/libfutures_io-79c229a8ba9a8c4a.rlib: /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-io-0.3.24/src/lib.rs
+
+/workspaces/pjsekai-soundgen-wasm/pjsekai-soundgen-wasm/target/wasm32-unknown-unknown/release/deps/futures_io-79c229a8ba9a8c4a.d: /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-io-0.3.24/src/lib.rs
+
+/home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-io-0.3.24/src/lib.rs:

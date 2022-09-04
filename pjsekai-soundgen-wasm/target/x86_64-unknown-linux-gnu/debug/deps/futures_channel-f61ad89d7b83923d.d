@@ -1,0 +1,10 @@
+/workspaces/pjsekai-soundgen-wasm/pjsekai-soundgen-wasm/target/x86_64-unknown-linux-gnu/debug/deps/futures_channel-f61ad89d7b83923d.rmeta: /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/lib.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/lock.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/mpsc/mod.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/mpsc/queue.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/mpsc/sink_impl.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/oneshot.rs
+
+/workspaces/pjsekai-soundgen-wasm/pjsekai-soundgen-wasm/target/x86_64-unknown-linux-gnu/debug/deps/futures_channel-f61ad89d7b83923d.d: /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/lib.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/lock.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/mpsc/mod.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/mpsc/queue.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/mpsc/sink_impl.rs /home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/oneshot.rs
+
+/home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/lib.rs:
+/home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/lock.rs:
+/home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/mpsc/mod.rs:
+/home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/mpsc/queue.rs:
+/home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/mpsc/sink_impl.rs:
+/home/codespace/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.24/src/oneshot.rs:
