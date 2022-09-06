@@ -1,9 +1,11 @@
 use std::collections::HashMap;
 
 use std::io::Write;
+use try_catch::catch;
 use std::process::{Command, Stdio};
+use std::result;
 
-use web_sys::console::log_1;
+use web_sys::console::*;
 use wasm_bindgen::JsValue;
 
 use once_cell::sync::Lazy;
@@ -142,27 +144,24 @@ impl Sound {
             end_index = start_index + sound.data.len();
         }
         if end_index > new_data.len() {
+            log_1(&new_data.len().into());
             new_data.resize(end_index, 0);
         }
-        new_data.splice(
-            start_index..end_index,
-            sound
-                .data
-                .iter()
-                .cloned()
-                .zip(new_data.clone()[start_index..end_index - 1].iter())
-                .map(|(a, b)| a.saturating_add(*b))
-                .collect::<Vec<i16>>()
-        );
+        // new_data.splice(
+        //     start_index..end_index,
+        //     sound
+        //         .data
+        //         .iter()
+        //         .cloned()
+        //         .zip(new_data.clone()[start_index..end_index - 1].iter())
+        //         .map(|(a, b)| a.saturating_add(*b))
+        //         .collect::<Vec<i16>>(),
+        // );
 
-        let new_sound = Sound {
+        Sound {
             data: new_data,
             bitrate: self.bitrate,
-        };
-
-        //new_sound じゃなくて new_sound.clone()だとエラーが起きない（）起きにくい？
-        new_sound.clone()
-        
+        }
     }
 }
 
