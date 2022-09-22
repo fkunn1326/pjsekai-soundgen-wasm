@@ -6,7 +6,7 @@ async function importModule() {
     return;
   }
 
-  const thread = await import('./wasm/pjsekai_soundgen_wasm.js');
+  const thread = await import('./public/wasm/pjsekai_soundgen_wasm.js');
   await thread.default();
   await thread.initThreadPool(navigator.hardwareConcurrency);
 
