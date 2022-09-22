@@ -3,10 +3,10 @@
 SweetPotatoの譜面から音声を生成するツール、pjsekai-soundgenのWasm版。
 
 >**Warning**
->このプロジェクトは動作しません。
->動くようにコードを書き加えたりしてくれると助かります。
+>このプロジェクトは動作しますが、とても不安定です。
 
-## `cd pjsekai-soundgen-wasm && wasm-pack build -t web -- --all-features` 
+
+## `cd pjsekai-soundgen-wasm && wasm-pack build --out-dir ../public/wasm -t web -- --all-features` 
 rustのビルド
 
 ## `yarn dev` 
