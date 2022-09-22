@@ -6,13 +6,12 @@ async function importModule() {
     return;
   }
 
-  const thread = await import('./pjsekai-soundgen-wasm/pkg/pjsekai_soundgen_wasm.js');
+  const thread = await import('./wasm/pjsekai_soundgen_wasm.js');
   await thread.default();
   await thread.initThreadPool(navigator.hardwareConcurrency);
 
   return Comlink.proxy({
     main: thread.main,
-    sum: thread.sum,
   });
 }
 

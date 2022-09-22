@@ -7,6 +7,7 @@ pub mod utils;
 use std::panic;
 use std::collections::HashMap;
 
+use js_sys::Uint8Array;
 use web_sys::console::*;
 use js_sys::Array;
 
@@ -36,7 +37,8 @@ pub fn sum(numbers: &[i32]) -> i32 {
 }
 
 #[wasm_bindgen]
-pub async fn main(bgm_raw: Vec<u8>, id: String, bgm_volume: f32, shift: f32, notes_per_thread: usize) {
+pub async fn main(bgm_raw: Vec<u8>, id: String, bgm_volume: f32, shift: f32, notes_per_thread: usize) -> Uint8Array {
+    let bgm_def = &bgm_raw;
     console_error_panic_hook::set_once();
     show_title();
     let level = Level::fetch(&id).await.unwrap_or_else(|err| match err {
@@ -61,7 +63,10 @@ pub async fn main(bgm_raw: Vec<u8>, id: String, bgm_volume: f32, shift: f32, not
     let note_sound_data = SOUND_MAP
         .par_iter()
         .map(|(_key, value)| {
-            let raw = Sound::load(&value.0.to_vec());
+            let raw = Sound {
+                data: value.0.to_vec().chunks_exact(2).into_iter().map(|a| i16::from_le_bytes([a[0], a[1]])).collect(),
+                bitrate: 48000,
+            };
             (value.1, raw)
     }).collect::<HashMap<_, _>>();
 
@@ -72,13 +77,12 @@ pub async fn main(bgm_raw: Vec<u8>, id: String, bgm_volume: f32, shift: f32, not
                      .for_each(|(note, times)| {
                         log_1(&JsValue::from(&format!("{:?}: {:?}", note, times)));
                         let sound = note_sound_data.get(note.as_str()).unwrap().clone();
-                        let is_critical = note.starts_with("critical_");
-                        let thread_num: usize = (times.len() as f32 / (notes_per_thread as f32)).ceil() as usize;
-                        (0..thread_num as usize).into_par_iter()
+                        (0..1).into_par_iter()
                                        .for_each(|i| {
                                             let lsound = sound.clone();
                                             let ltx = tx.clone();
-                                            let ltimes = times[(i * notes_per_thread)..=((i + 1) * notes_per_thread).min(times.len() - 1)].to_vec();
+                                            let ltimes = times;
+
                                             let mut local_sound = Sound::empty(None);
                                             for (i, time) in ltimes.iter().enumerate() {
                                                 if i == notes_per_thread {
@@ -91,6 +95,52 @@ pub async fn main(bgm_raw: Vec<u8>, id: String, bgm_volume: f32, shift: f32, not
                                         });
                      });
 
+    connect_note_timings.clone()
+                        .par_iter()
+                        .for_each(|(note, times)|{
+                            let mut events = vec![];
+                            for (start, end) in times.clone() {
+                                events.push((1, start));
+                                events.push((-1, end));
+                            }
+                            events.sort_by(|a, b| {
+                                if a.1 == b.1 {
+                                    b.0.partial_cmp(&a.0).unwrap()
+                                } else {
+                                    a.1.partial_cmp(&b.1).unwrap()
+                                }
+                            });
+                            let sound = note_sound_data.get(note.as_str()).unwrap().clone();
+                            let ltx = tx.clone();
+
+                            let mut local_sound = Sound::empty(None);
+                            let lsound = sound.clone();
+                            drop(sound);
+                            let mut current = 0;
+                            let mut start_time = 0.0;
+                            for (sign, time) in events.clone() {
+                                current += sign;
+                                if sign == -1 && current == 0 {
+                                    local_sound = local_sound.overlay_loop(&lsound, start_time, time);
+                                } else if sign == 1 && current == 1 {
+                                    start_time = time;
+                                }
+                            }
+                            assert_eq!(current, 0);
+                            ltx.send(local_sound).unwrap();
+                        });
+                        
+    let mut merged_sounds = Sound::empty(None);
+    for _ in 0..rx.len() {
+        let received = rx.recv().unwrap();
+        merged_sounds = merged_sounds.overlay_at(&received, 0.0);
+        drop(received);
+    }
+    let mut final_bgm: Sound;
+    final_bgm = bgm;
+    final_bgm = final_bgm.overlay_at(&merged_sounds, 0.0);
+    let export_bgm = &final_bgm.data.iter().flat_map(|a| a.to_le_bytes().to_vec()).collect::<Vec<u8>>();
+
     log_3(&JsValue::from("%cInfo%c BGMとSEを合成中..."), &JsValue::from("color:white; font-weight: bold; background-color:orange; padding:2px 4px; border-radius:4px;"), &JsValue::from(""));
-    // log_3(&JsValue::from(&format!("%cInfo%c {:?}, {:?}", note, times)), &JsValue::from("color:white; font-weight: bold; background-color:orange; padding:2px 4px; border-radius:4px;"), &JsValue::from(""));
+    return Uint8Array::new(&unsafe { Uint8Array::view(&export_bgm) }.into());
 }

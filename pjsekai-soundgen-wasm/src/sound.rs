@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 
 use std::io::Write;
-use try_catch::catch;
 use std::process::{Command, Stdio};
 use std::result;
 
@@ -12,20 +11,20 @@ use once_cell::sync::Lazy;
 
 pub static SOUND_MAP: Lazy<HashMap<i32, (&[u8], &'static str)>> = Lazy::new(|| {
     HashMap::from([
-        (3, (&include_bytes!("../sounds/tap.mp3")[..], "tap")),
-        (4, (&include_bytes!("../sounds/flick.mp3")[..], "flick")),
-        (5, (&include_bytes!("../sounds/tap.mp3")[..], "slide_tap")),
-        (6, (&include_bytes!("../sounds/tick.mp3")[..], "slide_tick")),
-        (7, (&include_bytes!("../sounds/tap.mp3")[..], "slide_tap")),
-        (8, (&include_bytes!("../sounds/flick.mp3")[..], "flick")),
-        (9, (&include_bytes!("../sounds/connect.mp3")[..], "connect")),
-        (10, (&include_bytes!("../sounds/critical_tap.mp3")[..], "critical_tap")),
-        (11, (&include_bytes!("../sounds/critical_flick.mp3")[..], "critical_flick")),
-        (12, (&include_bytes!("../sounds/tap.mp3")[..], "slide_tap")),
-        (13, (&include_bytes!("../sounds/critical_tick.mp3")[..], "critical_slide_tick")),
-        (14, (&include_bytes!("../sounds/tap.mp3")[..], "slide_tap")),
-        (15, (&include_bytes!("../sounds/critical_flick.mp3")[..], "critical_flick")),
-        (16, (&include_bytes!("../sounds/critical_connect.mp3")[..], "critical_connect")),
+        (3, (&include_bytes!("../sounds/tap.pcm")[..], "tap")),
+        (4, (&include_bytes!("../sounds/flick.pcm")[..], "flick")),
+        (5, (&include_bytes!("../sounds/tap.pcm")[..], "slide_tap")),
+        (6, (&include_bytes!("../sounds/tick.pcm")[..], "slide_tick")),
+        (7, (&include_bytes!("../sounds/tap.pcm")[..], "slide_tap")),
+        (8, (&include_bytes!("../sounds/flick.pcm")[..], "flick")),
+        (9, (&include_bytes!("../sounds/connect.pcm")[..], "connect")),
+        (10, (&include_bytes!("../sounds/critical_tap.pcm")[..], "critical_tap")),
+        (11, (&include_bytes!("../sounds/critical_flick.pcm")[..], "critical_flick")),
+        (12, (&include_bytes!("../sounds/tap.pcm")[..], "slide_tap")),
+        (13, (&include_bytes!("../sounds/critical_tick.pcm")[..], "critical_slide_tick")),
+        (14, (&include_bytes!("../sounds/tap.pcm")[..], "slide_tap")),
+        (15, (&include_bytes!("../sounds/critical_flick.pcm")[..], "critical_flick")),
+        (16, (&include_bytes!("../sounds/critical_connect.pcm")[..], "critical_connect")),
     ])
 });
 
@@ -144,19 +143,18 @@ impl Sound {
             end_index = start_index + sound.data.len();
         }
         if end_index > new_data.len() {
-            log_1(&new_data.len().into());
             new_data.resize(end_index, 0);
         }
-        // new_data.splice(
-        //     start_index..end_index,
-        //     sound
-        //         .data
-        //         .iter()
-        //         .cloned()
-        //         .zip(new_data.clone()[start_index..end_index - 1].iter())
-        //         .map(|(a, b)| a.saturating_add(*b))
-        //         .collect::<Vec<i16>>(),
-        // );
+        new_data.splice(
+            start_index..end_index,
+            sound
+                .data
+                .iter()
+                .cloned()
+                .zip(new_data.clone()[start_index..end_index - 1].iter())
+                .map(|(a, b)| a.saturating_add(*b))
+                .collect::<Vec<i16>>(),
+        );
 
         Sound {
             data: new_data,

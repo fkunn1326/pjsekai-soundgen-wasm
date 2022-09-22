@@ -9,12 +9,46 @@
     <!-- <script src="./pjsekai-soundgen-wasm/pkg/pjsekai_soundgen_wasm.js"></script>     -->
   </head>
   <body>
-    <h3>Upload a video to transcode to mp4 (x264) and play!</h3>
-    <video id="output-video" controls></video><br/>
-    <input type="file" id="uploader">
-    <button onClick="cancel()">Cancel</button>
-    <p id="message"></p>
-    <div id="test"></div>
     <script src="main.js" type="module"></script>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+          <div class="container-fluid">
+              <a class="navbar-brand" href="#">Pjsekai-Soundgen / プロセカ風譜面音声生成ツール</a>
+          </div>
+      </nav>
+    </header>
+    <main class="container is-centered">
+      <div class="row text-center justify-content-center">
+          <div class="col-10 mx-4 my-4 box">
+              <p>SweetPotatoの譜面から音声を生成するツール、pjsekai-soundgenのWeb版です。</p>
+              <p>譜面IDを入力してください。</p>
+          </div>
+          <div class="col-10 col-md-6 mx-4 my-4 box">
+            <div class="input-group has-validation">
+              <span class="input-group-text">#</span>
+              <div class="form-floating is-invalid col" id="chart_box">
+                <input type="text" class="form-control" id="chart_id" placeholder="Username" required="">
+                <label for="chart_id">譜面IDを入力</label>
+              </div>
+              <div class="invalid-feedback d-none" id="chart_feedback1">
+                譜面IDを入力してください。
+              </div>
+              <div class="invalid-feedback d-none" id="chart_feedback2">
+                譜面が見つかりませんでした。
+              </div>
+              <div class="valid-feedback d-none" id="chart_feedback3">
+                譜面が読み込まれました。
+              </div>      
+            </div>           
+          </div>
+          <div class="col-10 col-md-6 mx-4 my-4 box">
+              <button type="button" class="btn btn-primary btn-lg" id="btn_confirm">音声を生成する</button>
+              <div class="mx-4 my-4 box text-center" id="info_box"></div>
+          </div>
+      </div>
+      <div class="row text-center">
+          <h4 id="predicted_difficulty"></h4>
+      </div>
+    </main>
   </body>
 </html>
